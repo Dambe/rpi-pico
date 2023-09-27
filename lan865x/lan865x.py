@@ -6,6 +6,8 @@ LOW = 0
 LED = Pin("LED", Pin.OUT)
 
 
+# MicroPython SPI documentation:
+# https://docs.micropython.org/en/latest/library/machine.SPI.html
 def spi_write(spi_inst: SPI, cs_pin: Pin, spi_write_buf: bytearray):
     LED.toggle()
     cs_pin.value(LOW)
@@ -14,8 +16,18 @@ def spi_write(spi_inst: SPI, cs_pin: Pin, spi_write_buf: bytearray):
     LED.toggle()
 
 
-def spi_read():
-    pass
+def spi_read(spi_inst: SPI, cs_pin: Pin, r_len=0):
+    if r_len == 0:
+        return
+
+    LED.toggle()
+    cs_pin.value(LOW)
+    spi_read_data = bytearray(r_len)
+    spi_inst.readinto(spi_read_data, 0x00)
+    cs_pin.value(HIGH)
+    LED.toggle()
+
+    return spi_read_data
 
 
 def spi_read_write(spi_inst: SPI, cs_pin: Pin, spi_write_buf: bytearray):
