@@ -53,10 +53,8 @@ def spi_read_write(spi_inst: SPI, cs_pin: Pin, spi_write_buf: bytearray):
 
 
 if __name__ == "__main__":
-    # assign Chip Select (CS) pin
-    spi_cs = Pin(7, Pin.OUT)
-    # start CS pin high
-    spi_cs.value(HIGH)
+    # assign Chip Select (CS) pin and set it high
+    spi_cs = Pin(7, Pin.OUT, value=HIGH)
     # initialize SPI
     spi = SPI(
         0, baudrate=100000, polarity=0, phase=0, sck=Pin(2), mosi=Pin(3), miso=Pin(4)
