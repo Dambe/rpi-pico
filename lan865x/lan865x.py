@@ -18,12 +18,11 @@ def spi_write(spi_inst: SPI, cs_pin: Pin, spi_write_buf: bytearray):
 
 def spi_read(spi_inst: SPI, cs_pin: Pin, r_len=0):
     if r_len == 0:
-        return
+        return bytearray()
 
     LED.toggle()
     cs_pin.value(LOW)
-    spi_read_data = bytearray(r_len)
-    spi_inst.readinto(spi_read_data, 0x00)
+    spi_read_data = spi_inst.read(r_len)
     cs_pin.value(HIGH)
     LED.toggle()
 
@@ -34,7 +33,7 @@ def spi_read_write(spi_inst: SPI, cs_pin: Pin, spi_write_buf: bytearray):
     buf_len = len(spi_write_buf)
 
     if buf_len == 0:
-        return
+        return bytearray()
 
     spi_read_buf = bytearray(buf_len)
 
@@ -61,5 +60,7 @@ if __name__ == "__main__":
     )
 
     test_buf = bytearray(8)
+    data = spi_read(spi, spi_cs, 4)
+    print(data)
     data = spi_read_write(spi, spi_cs, test_buf)
     print(data)
